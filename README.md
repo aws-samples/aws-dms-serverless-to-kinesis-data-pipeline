@@ -245,8 +245,10 @@ Secrets Manager displays the current version (`AWSCURRENT`) of the secret. To se
 
 1. Start the DMS Replication task by replacing the ARN in below command.
    <pre>
+   (.venv) $ DMS_REPLICATION_CONFIG_ARN=$(aws cloudformation describe-stacks --stack-name <i>DMSServerlessAuroraMysqlToKDSStack</i> \
+   | jq -r '.Stacks[0].Outputs | map(select(.OutputKey == "DMSReplicationConfigArn")) | .[0].OutputValue')
    (.venv) $ aws dms start-replication \
-                     --replication-config-arn {<i>dms-replication-config-arn</i>} \
+                     --replication-config-arn <i>${DMS_REPLICATION_CONFIG_ARN}</i> \
                      --start-replication-type start-replication
    </pre>
 
@@ -348,8 +350,10 @@ Secrets Manager displays the current version (`AWSCURRENT`) of the secret. To se
 ## Clean Up
 1. Stop the DMS Replication task by replacing the ARN in below command.
    <pre>
+   (.venv) $ DMS_REPLICATION_CONFIG_ARN=$(aws cloudformation describe-stacks --stack-name <i>DMSServerlessAuroraMysqlToKDSStack</i> \
+   | jq -r '.Stacks[0].Outputs | map(select(.OutputKey == "DMSReplicationConfigArn")) | .[0].OutputValue')
    (.venv) $ aws dms stop-replication \
-                     --replication-config-arn {<i>dms-replication-config-arn</i>}
+                     --replication-config-arn <i>${DMS_REPLICATION_CONFIG_ARN}</i>
    </pre>
 2. Delete the CloudFormation stack by running the below command.
    <pre>
